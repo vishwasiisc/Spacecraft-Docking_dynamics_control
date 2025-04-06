@@ -23,7 +23,7 @@ plot(t,q_spacecraft);
 subplot(3,1,3)
 hold on
 title("tracking error quat")
-plot(t,q_target - q_spacecraft);
+plot(t,q_target - q_spacecraft)
 
 movegui('northwest')
 

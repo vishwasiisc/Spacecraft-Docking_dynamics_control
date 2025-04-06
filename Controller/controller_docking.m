@@ -17,8 +17,8 @@ target_rel_craft_quat = subEP(q_spacecraft,q_target);
 q_relative_error = q_subtract(desired_relative_quat,current_relative_quat);
 
 %%
-q_dockframenow = q_subtract(q_target,q_dockframe);
-q_error = q_subtract(q_target,q_dockframenow);
+q_dockframenow = subEP(q_target,q_dockframe);
+q_error = subEP(q_target,q_dockframenow);
 
 %% relative omega stuff
 %{
@@ -37,7 +37,7 @@ R = quat2dcm(q_dockframe);
 
 %% gains
 
-p_gain = 100*[0.01,    0,    0;
+p_gain = 10*[0.01,    0,    0;
                 0, 0.01,    0;
                 0,    0, 0.01];
 
@@ -47,7 +47,7 @@ d_gain = 3*[ 0.15,    0,    0;
 
 %% controller
 
-tau_spacecraft = p_gain*R'*q_error(2:4) - d_gain*(omega_spacecraft) + 0*d_gain*omega_target;
+tau_spacecraft = p_gain*q_error(2:4) - d_gain*(omega_spacecraft) + 0*d_gain*omega_target;
 F_spacecraft = [0,0,0]';
 
 
