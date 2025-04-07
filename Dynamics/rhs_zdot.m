@@ -7,6 +7,7 @@ q_target = z(8:11);
 omega_target = z(12:14);
 
 r_spacecraft = z(15:17);
+v_spacecraft = z(18:20);
 
 %% unpacking parameters
 inv_I_spacecraft = p.inv_I;
@@ -33,11 +34,12 @@ F_spacecraft = tau_F(4:6);
 
 omegadot_spacecraft = inv_I_spacecraft*(tau_spacecraft - cross(omega_spacecraft,I_spacecraft*omega_spacecraft));
 omegadot_target = inv_I_target*(tau_target - cross(omega_target,I_target*omega_target));
-r_spacecraftdot = F_spacecraft/m_spacecraft;
+r_spacecraftdot = v_spacecraft;
+v_spacecraftdot = F_spacecraft/m_spacecraft;
 
 
 
 
 
-zdot = [q_dot_spacecraft;omegadot_spacecraft;q_dot_target;omegadot_target;r_spacecraftdot];
+zdot = [q_dot_spacecraft;omegadot_spacecraft;q_dot_target;omegadot_target;r_spacecraftdot;v_spacecraftdot];
 end

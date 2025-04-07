@@ -50,15 +50,13 @@ r_dockport_target = R_target'*p.r_port_target;
 r_dock_norm = r_dockport_target/norm(r_dockport_target);
 r_dockport_spacecraft = r_spacecraft - R_spacecraft*p.r_port_spacecraft;
 
-t0 = 100;
-
-if t < t0
+if t < 50
 
     target_r = 5*r_dock_norm;
     error_r = target_r-r_spacecraft;
     F_spacecraft = 1*error_r - 5*v_spacecraft;
 else
-    t1 = t-t0;
+    t1 = t-50;
     r1 = 5 - (4/500)*t1;
 
     if r1<1
@@ -67,7 +65,7 @@ else
 
     target_r = r1*r_dock_norm;
     error_r = target_r-r_spacecraft;
-    F_spacecraft = 50*error_r - 30*v_spacecraft;
+    F_spacecraft = 5*error_r - 8*v_spacecraft;
 
 end
 

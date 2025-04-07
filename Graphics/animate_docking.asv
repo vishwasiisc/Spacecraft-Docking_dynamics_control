@@ -33,8 +33,8 @@ R_spacecraft = quat2dcm(q_spacecraft);
 R_target     = quat2dcm(q_target);
 
 target_p = R_target'*target;
-chaser_p = R_spacecraft'*chaser;
-chaser_p = chaser_p + r_spacecraft;
+chaser_p = R_spacecraft*chaser;
+chaser_p = 
 
 r_port_spacecraftp = r_spacecraft + R_spacecraft'*r_port_spacecraft;
 r_port_targetp = R_target'*r_port_target;
@@ -60,7 +60,6 @@ quiver3(r_spacecraft(1),r_spacecraft(2),r_spacecraft(3),docking_frame(1,3),docki
 
 plot3(r_port_targetp(1),r_port_targetp(2),r_port_targetp(3),'k*')
 plot3(r_port_spacecraftp(1),r_port_spacecraftp(2),r_port_spacecraftp(3),'k*')
-plot3(chaser_p(1,:),chaser_p(2,:),chaser_p(3,:),'b-');
 
 axis("equal")
 xlim([-5,5]);

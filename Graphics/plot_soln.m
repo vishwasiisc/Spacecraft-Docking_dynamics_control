@@ -8,6 +8,7 @@ z = soln.y;
 
 q_spacecraft = z(1:4,:);
 q_target     = z(8:11,:);
+r_spacecraft = z(15:17,:);
 
 figure(1)
 subplot(3,1,1)
@@ -26,6 +27,11 @@ title("tracking error quat")
 plot(t,q_target - q_spacecraft)
 
 movegui('northwest')
+
+
+figure(3)
+plot(t,r_spacecraft);
+movegui('southwest')
 
 
 
