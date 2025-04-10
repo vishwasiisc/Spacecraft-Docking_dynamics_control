@@ -18,7 +18,15 @@ while t < stop
     clf
     hold on
     grid on
+
     z = deval(soln,t);
+
+    if t > 50
+        t1 = t-10:0.2:t;
+    else
+        t1 = 0:0.8:t;
+    end
+    z1 = deval(soln,t1);
 
     q_spacecraft     = z(1:4);
     omega_spacecraft = z(5:7);
@@ -27,14 +35,15 @@ while t < stop
     omega_target = z(12:14);
 
     r_spacecraft = z(15:17);
+    r1_spacecraft = z1(15:17,:);
 
 %%
 R_spacecraft = quat2dcm(q_spacecraft);
 R_target     = quat2dcm(q_target);
 
-target_p = R_target'*target;
-chaser_p = R_spacecraft*chaser;
-chaser_p = 
+target_p = target.Points*R_target;
+chaser_p = chaser.Points*R_spacecraft;
+chaser_p = chaser_p + r_spacecraft';
 
 r_port_spacecraftp = r_spacecraft + R_spacecraft'*r_port_spacecraft;
 r_port_targetp = R_target'*r_port_target;
@@ -47,8 +56,10 @@ docking_frame = R_dock*R_spacecraft;
 %%
 
 plot_frame(0,0,0,R_target);
-plot3(target_p(1,:),target_p(2,:),target_p(3,:),'r-');
+%plot3(target_p(1,:),target_p(2,:),target_p(3,:),'r-');
+trisurf(target.ConnectivityList,target_p(:,1),target_p(:,2),target_p(:,3),'FaceColor','r');%'edgecolor','none')
 plot_frame(r_spacecraft(1),r_spacecraft(2),r_spacecraft(3),R_spacecraft);
+plot3(r1_spacecraft(1,:),r1_spacecraft(2,:),r1_spacecraft(3,:),'k')
 
 
 %{
@@ -60,6 +71,9 @@ quiver3(r_spacecraft(1),r_spacecraft(2),r_spacecraft(3),docking_frame(1,3),docki
 
 plot3(r_port_targetp(1),r_port_targetp(2),r_port_targetp(3),'k*')
 plot3(r_port_spacecraftp(1),r_port_spacecraftp(2),r_port_spacecraftp(3),'k*')
+%plot3(chaser_p(1,:),chaser_p(2,:),chaser_p(3,:),'b-');
+trisurf(chaser.ConnectivityList,chaser_p(:,1),chaser_p(:,2),chaser_p(:,3),'FaceColor','y');
+
 
 axis("equal")
 xlim([-5,5]);
@@ -68,7 +82,7 @@ zlim([-5,5]);
 xlabel("x")
 ylabel("y")
 zlabel("z")
-view(40,30)
+view(40,40)
 
 drawnow
 

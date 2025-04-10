@@ -31,11 +31,11 @@ R_spacecraft = quat2dcm(q_spacecraft);
 
 %% gains
 
-p_gain = 10*[0.01,    0,    0;
+p_gain = 50*[0.01,    0,    0;
                 0, 0.01,    0;
                 0,    0, 0.01];
 
-d_gain = 3*[ 0.15,    0,    0;
+d_gain = 20*[ 0.15,    0,    0;
                 0, 0.15,    0;
                 0,    0, 0.15];
 
@@ -53,13 +53,14 @@ r_dockport_spacecraft = r_spacecraft - R_spacecraft*p.r_port_spacecraft;
 t0 = 100;
 
 if t < t0
-
-    target_r = 5*r_dock_norm;
+    r = r_spacecraft-5*r_dock_norm; 
+    target_r = r*(1 - (t/t0)) + 5*r_dock_norm;
     error_r = target_r-r_spacecraft;
-    F_spacecraft = 1*error_r - 5*v_spacecraft;
+    v_target = [0,0,0]';
+    %F_spacecraft = 50*error_r - 30*v_spacecraft;
 else
     t1 = t-t0;
-    r1 = 5 - (4/500)*t1;
+    r1 = 5 - (4/200)*t1;
 
     if r1<1
         r1 = 1;
@@ -67,11 +68,13 @@ else
 
     target_r = r1*r_dock_norm;
     error_r = target_r-r_spacecraft;
-    F_spacecraft = 50*error_r - 30*v_spacecraft;
+    %F_spacecraft = 50*error_r - 30*v_spacecraft;
+    v_target = cross(omega_target,target_r);
 
 end
 
 
+F_spacecraft = 400*error_r + 200*(v_target - v_spacecraft);
 %F_spacecraft = [0,0,0]';
 
 
